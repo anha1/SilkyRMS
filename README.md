@@ -21,7 +21,8 @@ lib_deps =
 * **Dynamic DC Offset Tracking:** Resistor tolerances and thermal drift cause the actual resting voltage of a circuit to deviate from the theoretical midpoint (e.g., 2048 on a 12-bit ADC). SilkyRMS seeds the offset via a calibration routine and continuously adjusts it using an EMA filter, guaranteeing mathematical symmetry around the AC waveform.
 * **Prime Number Aliasing Protection:** System yields (required for FreeRTOS IDLE tasks and WiFi) introduce sampling blind spots. SilkyRMS uses prime-number modulo boundaries (e.g., yielding for 2ms every 199 samples) to force these blind spots to precess mathematically across the 50Hz/60Hz AC phase. This prevents systematic undersampling of wave peaks.
 * **Variable ADC Resolution:** Calculates dynamic boundaries based on the hardware bit depth provided.
-* **External ADC supoort** please see the [External ADC example](/examples/ExternalAdc/ExternalAdc.ino).
+* **ESP32 12 bit ADC support:** please see [BasicMeasurement (embedded ADC)](/examples/BasicMeasurement/BasicMeasurement.ino).
+* **External ADC support:** please see [External ADC example](/examples/ExternalAdc/ExternalAdc.ino).
 
 ## Compatible Hardware
 
