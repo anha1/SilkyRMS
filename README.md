@@ -25,14 +25,14 @@ A bypass capacitor is required at the midpoint to stabilize the DC reference aga
 
        3.3V (ESP32)
         │
-       [R1] 10kΩ
+       [R1] 2kΩ
         │
         ├────────────────────── CT Clamp (Sleeve / Terminal 1)
         │
         ├──────────┐
         │          │
        [R2]       === C1 (10µF)
-       10kΩ        │
+       2kΩ        │
         │          │
        GND        GND
 
@@ -48,7 +48,7 @@ SilkyRMS(uint8_t pin,
          double ac_voltage = 230.0);
 ```
 
-* `pin`: The GPIO pin connected to the CT clamp circuit.
+* `pin`: The GPIO pin with ADC support connected to the CT clamp circuit.
 * `adc_resolution_bits`: The bit depth of your MCU's ADC (e.g., 12 for most ESP32s).
 * `v_ref`: The analog reference voltage powering your MCU (typically 3.3V).
 * `volts_to_amps`: The ratio of your specific CT clamp. If your clamp produces 1V at 30A, this value is `30.0`. 
@@ -71,7 +71,6 @@ void setup() {
     powerSensor.begin();
     
     // Measures 10,000 samples to establish the actual hardware resting point
-    // Ensure 0A is flowing through the mains wire during this step
     powerSensor.calibrate_offset();
 }
 
