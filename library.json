@@ -1,7 +1,7 @@
 {
   "name": "SilkyRMS",
   "version": "1.0.0",
-  "description": "Power/Current calculation for ESP32.",
+  "description": "Power/Current calculation for ESP32 using SCT-013-like sensors.",
   "keywords": ["rms", "dsp", "esp32", "energy-monitor", "ac-current", "freertos", "power", "current", "SCT-013"],
   "repository": {
     "type": "git",

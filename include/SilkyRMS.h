@@ -5,13 +5,11 @@
 
 class SilkyRMS {
 public:
-    // Fully encapsulated hardware configuration
     SilkyRMS(uint8_t pin, uint8_t adc_resolution_bits = 12, double v_ref = 3.3, double volts_to_amps = 30.0, double ac_voltage = 230.0);
 
     void begin();
     void calibrate_offset(uint32_t num_samples = 10000);
 
-    // Pass-by-pointer method. The library writes the final math directly to your variables.
     void run(uint32_t window_ms, double* out_power_w, double* out_irms);
 
     double get_dc_offset() const;

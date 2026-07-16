@@ -48,7 +48,7 @@ void SilkyRMS::run(uint32_t window_ms, double* out_power_w, double* out_irms) {
     uint64_t sum_sq_raw = 0;
     uint32_t sum_raw = 0;
 
-    // High-speed integer math loop
+    // High-speed integer math loop, read as much ADC values as possible
     while ((millis() - start_time) < window_ms) {
         for (uint32_t i = 0; i < _samples_per_yield; i++) {
             uint32_t raw = analogRead(_pin);
@@ -72,12 +72,11 @@ void SilkyRMS::run(uint32_t window_ms, double* out_power_w, double* out_irms) {
     double batch_mean = (double)sum_raw / samples;
     _dc_offset += (batch_mean - _dc_offset) * _ema_alpha;
 
-    // Variance Algebra 
+    // Final Math
     double sum_raw_d = (double)sum_raw;
     double sum_sq = (double)sum_sq_raw - ((sum_raw_d * sum_raw_d) / samples);
     if (sum_sq < 0.0) sum_sq = 0.0; 
 
-    // Final Math
     double raw_rms = sqrt(sum_sq / samples);
     double rms_volts = raw_rms * (_v_ref / _adc_max);
     double irms = rms_volts * _volts_to_amps;
