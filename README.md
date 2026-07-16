@@ -21,6 +21,7 @@ lib_deps =
 * **Dynamic DC Offset Tracking:** Resistor tolerances and thermal drift cause the actual resting voltage of a circuit to deviate from the theoretical midpoint (e.g., 2048 on a 12-bit ADC). SilkyRMS seeds the offset via a calibration routine and continuously adjusts it using an EMA filter, guaranteeing mathematical symmetry around the AC waveform.
 * **Prime Number Aliasing Protection:** System yields (required for FreeRTOS IDLE tasks and WiFi) introduce sampling blind spots. SilkyRMS uses prime-number modulo boundaries (e.g., yielding for 2ms every 199 samples) to force these blind spots to precess mathematically across the 50Hz/60Hz AC phase. This prevents systematic undersampling of wave peaks.
 * **Variable ADC Resolution:** Calculates dynamic boundaries based on the hardware bit depth provided.
+* **External ADC supoort** please see the [External ADC example](/examples/ExternalAdc/ExternalAdc.ino).
 
 ## Compatible Hardware
 
@@ -52,50 +53,20 @@ A bypass capacitor is required at the midpoint to stabilize the DC reference aga
 ## Constructor Parameters
 
 ```cpp
-SilkyRMS(uint8_t pin, 
+SilkyRMS(
          uint8_t adc_resolution_bits = 12, 
          double v_ref = 3.3, 
          double volts_to_amps = 30.0, 
          double ac_voltage = 230.0);
 ```
 
-* `pin`: The GPIO pin with ADC support connected to the CT clamp circuit.
 * `adc_resolution_bits`: The bit depth of your MCU's ADC (e.g., 12 for most ESP32s).
 * `v_ref`: The analog reference voltage powering your MCU (typically 3.3V).
 * `volts_to_amps`: The ratio of your specific CT clamp. If your clamp produces 1V at 30A, this value is `30.0`. 
 * `ac_voltage`: Your local grid mains voltage (e.g., `230.0` for EU, `120.0` for US). Used to calculate final wattage.
 
-## Usage
+## Usage examples
 
-Include the library, initialize the object with your hardware configuration, and pass memory addresses to the `run()` method.
-
-```cpp
-#include <Arduino.h>
-#include <SilkyRMS.h>
-
-// Initialize for a 30A/1V CT clamp on a 230V grid, using GPIO 4
-SilkyRMS powerSensor(4, 12, 3.3, 30.0, 230.0);
-
-void setup() {
-    Serial.begin(115200);
-    
-    powerSensor.begin();
-    
-    // Measures 10,000 samples to establish the actual hardware resting point
-    powerSensor.calibrate_offset();
-}
-
-void loop() {
-    double power_w = 0.0;
-    double irms = 0.0;
-
-    // Block for 5000ms. Library handles ADC reads, variance algebra, and RTOS yields.
-    powerSensor.run(5000, &power_w, &irms);
-
-    Serial.printf("Power: %.2f W | Current: %.2f A | Offset: %.2f | Samples: %lu\n", 
-                  power_w, 
-                  irms, 
-                  powerSensor.get_dc_offset(),
-                  powerSensor.get_last_sample_count());
-}
-```
+Please see:
+* [BasicMeasurement (embedded ADC)](/examples/BasicMeasurement/BasicMeasurement.ino) 
+* [External ADC](/examples/ExternalAdc/ExternalAdc.ino).
