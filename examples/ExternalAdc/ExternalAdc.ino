@@ -5,10 +5,16 @@
 // SilkyRMS(ADC_BITS, V_REF, VOLTS_TO_AMPS, AC_VOLTAGE)
 SilkyRMS powerSensor(12, 3.3, 30.0, 230.0);
 
+uint32_t my_read_external_edc() {
+    // custom EDC reading code
+    return analogRead(4);
+}
+
+
 void setup() {
     Serial.begin(115200);
 
-    powerSensor.begin_adc_native(4); // ADC PIN
+    powerSensor.begin_adc_external(my_read_external_edc);
     
     Serial.println("Calibrating hardware DC offset... please wait.");
     powerSensor.calibrate_offset(); 
