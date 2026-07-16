@@ -6,6 +6,15 @@ A high-performance, RTOS-aware AC signal RMS calculation library for ESP32 and m
 
 SilkyRMS calculates continuous True RMS current and power by utilizing high-speed hardware integer accumulation and an Exponential Moving Average (EMA) DC offset tracker. It is designed to maximize sample rates without starving RTOS background tasks or triggering watchdog panics.
 
+Available in PlatformIO libraries repository:
+```
+platformio.ini
+
+
+lib_deps = 
+	anha1/SilkyRMS@^1.0.1
+```
+
 ## Core Mechanics
 
 * **High-Speed Integer DSP Loop:** Bypasses software-emulated floating-point math during the active sampling window. On an ESP32-S3, this yields approximately 89,000 samples over a 5-second measurement window (~17.8 kHz sampling rate).
@@ -34,7 +43,7 @@ A bypass capacitor is required at the midpoint to stabilize the DC reference aga
         ├──────────┐
         │          │
        [R2]       === C1 (10µF)
-       2kΩ        │
+       2kΩ         │
         │          │
        GND        GND
 
