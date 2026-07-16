@@ -1,5 +1,7 @@
 # SilkyRMS
 
+Power/Current calculation for ESP32 using SCT-013-like sensors.
+
 A high-performance, RTOS-aware AC signal RMS calculation library for ESP32 and modern dual-core microcontrollers. 
 
 SilkyRMS calculates continuous True RMS current and power by utilizing high-speed hardware integer accumulation and an Exponential Moving Average (EMA) DC offset tracker. It is designed to maximize sample rates without starving RTOS background tasks or triggering watchdog panics.
