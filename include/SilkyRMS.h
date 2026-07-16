@@ -8,7 +8,7 @@ public:
     SilkyRMS(uint8_t pin, uint8_t adc_resolution_bits = 12, double v_ref = 3.3, double volts_to_amps = 30.0, double ac_voltage = 230.0);
 
     void begin();
-    void calibrate_offset(uint32_t num_samples = 10000);
+    void calibrate_offset(uint32_t num_samples = 10000, uint32_t warmup_delay_ms = 1000);
 
     void run(uint32_t window_ms, double* out_power_w, double* out_irms);
 

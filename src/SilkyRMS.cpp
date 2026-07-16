@@ -11,7 +11,7 @@ SilkyRMS::SilkyRMS(uint8_t pin, uint8_t adc_resolution_bits, double v_ref, doubl
     _adc_max = (double)((1 << _resolution_bits) - 1);
     
     _dc_offset = (_adc_max + 1.0) / 2.0; 
-    _ema_alpha = 0.05; 
+    _ema_alpha = 0.03; 
     _samples_per_yield = 199; 
     _yield_delay_ms = 2;
     _last_sample_count = 0;
@@ -22,13 +22,24 @@ void SilkyRMS::begin() {
     pinMode(_pin, INPUT);
 }
 
-void SilkyRMS::calibrate_offset(uint32_t num_samples) {
+void SilkyRMS::calibrate_offset(uint32_t num_samples, uint32_t warmup_delay_ms) {
+    uint32_t measure_samples = 0.66 * (float)num_samples;
+    uint32_t warmup_samples = num_samples - measure_samples;
+    
+    // 33% throwaway readings - give the circuit some time to stabilize
+    delay(warmup_delay_ms / 2);
+    for (uint32_t i = 0; i < warmup_samples; i++) {
+        analogRead(_pin);
+        if (i % 1000 == 0) delay(1);
+    }
+    delay(warmup_delay_ms / 2);
+
     uint32_t sum = 0;
-    for (uint32_t i = 0; i < num_samples; i++) {
+    for (uint32_t i = 0; i < measure_samples; i++) {
         sum += analogRead(_pin);
         if (i % 1000 == 0) delay(1);
     }
-    _dc_offset = (double)sum / num_samples;
+    _dc_offset = (double)sum / (double)measure_samples;
 }
 
 void SilkyRMS::set_yield_params(uint32_t samples_per_yield, uint32_t yield_delay_ms) {
@@ -69,15 +80,15 @@ void SilkyRMS::run(uint32_t window_ms, double* out_power_w, double* out_irms) {
     }
 
     // DC Offset EMA Tracker
-    double batch_mean = (double)sum_raw / samples;
+    double batch_mean = (double)sum_raw / (double)samples;
     _dc_offset += (batch_mean - _dc_offset) * _ema_alpha;
 
     // Final Math
     double sum_raw_d = (double)sum_raw;
-    double sum_sq = (double)sum_sq_raw - ((sum_raw_d * sum_raw_d) / samples);
+    double sum_sq = (double)sum_sq_raw - ((sum_raw_d * sum_raw_d) / (double)samples);
     if (sum_sq < 0.0) sum_sq = 0.0; 
 
-    double raw_rms = sqrt(sum_sq / samples);
+    double raw_rms = sqrt(sum_sq / (double)samples);
     double rms_volts = raw_rms * (_v_ref / _adc_max);
     double irms = rms_volts * _volts_to_amps;
     double power_w = irms * _ac_voltage;
