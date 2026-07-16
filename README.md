@@ -1,3 +1,6 @@
+![SilkyRMS vs emonlib](docs/compare.png)
+![SCT-013](docs/sensor.png)
+
 # SilkyRMS
 
 Power/Current calculation for ESP32 using SCT-013-like sensors.
