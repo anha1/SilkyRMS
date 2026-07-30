@@ -2,7 +2,7 @@
 ![SCT-013](docs/sensor.png)
 
 # Friendly Advice
-If you are working on a power monitoring project, consider using the [PZEM-004T](https://www.google.com/search?q=pzem-004t) module, which will provide far superior readings. 
+If you are working on a power monitoring project, consider using the [PZEM-004T](https://www.google.com/search?q=pzem-004t) module instead which will provide far superior readings. 
 This library is mostly useful if you are limited to using a standalone SCT-013 (or similar) sensor.
 
 # SilkyRMS
