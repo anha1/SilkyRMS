@@ -74,6 +74,13 @@ See:
 
 ## Calibration
 The SilkyRMS vs emonlib chart above shows raw library readings. Using a PZEM module as a reference, it is clear that both libraries report a phantom
-baseline power of about 100W caused by ADC and circuit noise. For my setup, I arrived at the following calibration formula applied on top of the SilkyRMS readings: ` float power_w_calibrated = 1.02 * power_w - 100.;
-`. With this correction applied, PZEM and SilkyRMS readings are nearly identical in practice:
+baseline power of about 100W caused by ADC and circuit noise. The noise level is also affected by power supply quality. For my setup, I arrived at the following calibration formula applied on top of the SilkyRMS readings:
+
+```cpp
+float power_w_calibrated = 1.02 * power_w - 100.;
+```
+
+With this correction applied, PZEM and SilkyRMS readings are nearly identical in practice:
 ![SilkyRMS calibrated vs PZEM](docs/calibration.png)
+
+Note that this formula works for my environment, but I'm not sure it's a generic adjustment — the same goes for the ~100W noise floor. That's why this correction is not built into the library. Treat my results as a reference point and choose the calibration that fits your own hardware.
