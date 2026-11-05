@@ -1,4 +1,3 @@
-![SilkyRMS vs emonlib](docs/compare.png)
 ![SCT-013](docs/sensor.png)
 
 # Friendly Advice
@@ -71,6 +70,11 @@ SilkyRMS(
 See:
 * [BasicMeasurement (embedded ADC)](/examples/BasicMeasurement/BasicMeasurement.ino) 
 * [External ADC](/examples/ExternalAdc/ExternalAdc.ino).
+
+
+## SilkyRMS vs emonlib readings (defaults)
+![SilkyRMS vs emonlib](docs/compare.png)
+
 
 ## Calibration
 The SilkyRMS vs emonlib chart above shows raw library readings. Using a PZEM module as a reference, it is clear that both libraries report a phantom
