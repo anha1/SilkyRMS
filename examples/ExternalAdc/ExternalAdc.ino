@@ -35,5 +35,5 @@ void loop() {
                   power_w, 
                   irms, 
                   powerSensor.get_dc_offset(),
-                  powerSensor.get_last_sample_count());
+                  (unsigned long)powerSensor.get_last_sample_count());
 }
